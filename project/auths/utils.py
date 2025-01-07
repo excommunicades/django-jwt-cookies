@@ -210,12 +210,12 @@ class PasswordRecoveryService:
         return user
 
 
-def set_tokens_in_cookies(response, refresh_token):
+def set_tokens_in_cookies(response, refresh_token, token_time=3600*24*21):
 
     response.set_cookie(
         'refreshToken', refresh_token,
         httponly=True,
         secure=True,
         samesite='Lax',
-        max_age=3600*24*21
+        max_age=token_time
     )

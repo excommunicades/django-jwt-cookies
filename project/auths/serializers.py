@@ -126,6 +126,8 @@ class AuthorizationSerializer(serializers.Serializer):
     Validates the nickname and password for authentication.
     """
 
+    token_time = serializers.IntegerField()
+
     nickname = serializers.CharField()
 
     password = serializers.CharField()

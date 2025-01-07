@@ -150,8 +150,15 @@ class Login_User(generics.GenericAPIView):
 
             return Response({'errors': errors}, status=status.HTTP_400_BAD_REQUEST)
         user_data = serializer.validated_data
+        try:
+            token_time = serializer.validated_data.get('token_time')
+        except:
+            token_time = 0
 
-        auth_service = AuthenticationService(user_data)
+            if not token_time:
+                token_time = 0
+
+            auth_service = AuthenticationService(user_data)
 
         try:
 
@@ -178,11 +185,12 @@ class Login_User(generics.GenericAPIView):
                     "username": user_data.username,
                     "nickname": user_data.nickname,
                     "pk": user_data.pk,
-                    "email": user_data.email
+                    "email": user_data.email,
+                    "refresh_token_time": token_time
                 }
             })
 
-            set_tokens_in_cookies(response=response, refresh_token=str(refresh_token))
+            set_tokens_in_cookies(response=response, refresh_token=str(refresh_token), token_time=token_time)
 
 
             return response
